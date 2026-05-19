@@ -6,6 +6,7 @@ import os
 BOT_TOKEN = os.getenv("TOKEN")
 FYERS_APP_ID = os.getenv("FYERS_APP_ID")
 FYERS_SECRET_KEY = os.getenv("FYERS_SECRET_KEY")
+FYERS_ACCESS_TOKEN = os.getenv("FYERS_ACCESS_TOKEN")
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Trading bot online 🚀")
@@ -52,11 +53,27 @@ async def auth(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"Access Token Generated:\n{response}"
     )
 
+async def price(update: Update, context: ContextTypes.DEFAULT_TYPE):
+ 
+    fyers = fyersModel.FyersModel(
+        client_id=FYERS_APP_ID,
+        token=os.getenv("FYERS_ACCESS_TOKEN")
+    )
+ 
+    data = {
+        "symbols": "NSE:SBIN-EQ"
+    }
+ 
+    response = fyers.quotes(data)
+ 
+    await update.message.reply_text(str(response))
+
 app = ApplicationBuilder().token(BOT_TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("login", login))
 app.add_handler(CommandHandler("auth", auth))
+app.add_handler(CommandHandler("price", price))
 
 print("Trading bot started...")
 
