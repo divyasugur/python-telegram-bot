@@ -57,7 +57,7 @@ async def price(update: Update, context: ContextTypes.DEFAULT_TYPE):
  
     fyers = fyersModel.FyersModel(
         client_id=FYERS_APP_ID,
-        token=os.getenv("FYERS_ACCESS_TOKEN")
+        token=FYERS_ACCESS_TOKEN
     )
  
     data = {
