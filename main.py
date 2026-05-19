@@ -30,7 +30,34 @@ app = ApplicationBuilder().token(BOT_TOKEN).build()
 
 app.add_handler(CommandHandler("start", start))
 app.add_handler(CommandHandler("login", login))
+app.add_handler(CommandHandler("auth", auth))
 
 print("Trading bot started...")
 
 app.run_polling()
+
+async def auth(update: Update, context: ContextTypes.DEFAULT_TYPE):
+ 
+    if len(context.args) == 0:
+        await update.message.reply_text(
+            "Usage:\n/auth YOUR_AUTH_CODE"
+        )
+        return
+ 
+    auth_code = context.args[0]
+ 
+    session = fyersModel.SessionModel(
+        client_id=FYERS_APP_ID,
+        secret_key=FYERS_SECRET_KEY,
+        redirect_uri="https://google.com",
+        response_type="code",
+        grant_type="authorization_code"
+    )
+ 
+    session.set_token(auth_code)
+ 
+    response = session.generate_token()
+ 
+    await update.message.reply_text(
+        f"Access Token Generated:\n{response}"
+    )
