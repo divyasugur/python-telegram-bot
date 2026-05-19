@@ -26,16 +26,6 @@ async def login(update: Update, context: ContextTypes.DEFAULT_TYPE):
         f"Login to FYERS:\n{auth_url}"
     )
 
-app = ApplicationBuilder().token(BOT_TOKEN).build()
-
-app.add_handler(CommandHandler("start", start))
-app.add_handler(CommandHandler("login", login))
-app.add_handler(CommandHandler("auth", auth))
-
-print("Trading bot started...")
-
-app.run_polling()
-
 async def auth(update: Update, context: ContextTypes.DEFAULT_TYPE):
  
     if len(context.args) == 0:
@@ -61,3 +51,13 @@ async def auth(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
         f"Access Token Generated:\n{response}"
     )
+
+app = ApplicationBuilder().token(BOT_TOKEN).build()
+
+app.add_handler(CommandHandler("start", start))
+app.add_handler(CommandHandler("login", login))
+app.add_handler(CommandHandler("auth", auth))
+
+print("Trading bot started...")
+
+app.run_polling()
